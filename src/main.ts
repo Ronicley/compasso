@@ -13,7 +13,16 @@ async function bootstrap() {
     .build()
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document)
-  
+
   await app.listen(3000);
 }
 bootstrap();
+
+
+//TODO: Cadastrar cliente
+//TODO: Consultar cidade pelo nome
+//TODO: Consultar cidade pelo estado
+//TODO: Consultar cliente pelo nome
+//TODO: Consultar cliente pelo Id
+//TODO: Remover cliente
+//TODO: Alterar o nome do cliente

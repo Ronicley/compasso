@@ -8,12 +8,12 @@ export class CityController {
 
   @Get()
   index(): Promise<City[]> {
-    return this.cityService.findAll();
+    return this.cityService.findAll()
   }
 
   @Post('create')
     async create(@Body() cityData: City): Promise<any> {
-      return this.cityService.create(cityData);
+      return await this.cityService.create(cityData);
   }
   
   @Put(':id/update')
