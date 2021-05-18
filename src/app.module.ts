@@ -11,7 +11,7 @@ import { Client } from './client/client.entity';
   imports: [CityModule, ClientModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'db',
+      database: 'db/db',
       entities: [
         City,
         Client
