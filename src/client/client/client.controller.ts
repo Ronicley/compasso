@@ -6,9 +6,9 @@ import { ClientService } from './client.service';
 export class ClientController {
   constructor(private clientService: ClientService) { }
 
-  @Get()
-  index(): Promise<Client[]> {
-    return this.clientService.findAll()
+  @Get(':name')
+  async index(@Param('name') name): Promise<Client[]> {
+    return await this.clientService.findByName(name)
   }
 
   @Post('create')

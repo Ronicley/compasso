@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, ILike, Like, Repository, UpdateResult } from 'typeorm';
 import { Client } from '../client.entity';
 
 @Injectable()
@@ -10,21 +10,20 @@ export class ClientService {
     private clientRepository: Repository<Client>
   ) { }
 
-  
-  async findAll(): Promise<Client[]> {
-    return await this.clientRepository.find();
+  async findByName(name): Promise<Client[]> {
+    return await this.clientRepository.find({ where: { name: Like(`%${name}%`) } });
   }
 
   async update(client: Client): Promise<UpdateResult> {
-    return await this.clientRepository.update(client.id, client);    
+    return await this.clientRepository.update(client.id, client);
   }
 
   async delete(id): Promise<DeleteResult> {
     return await this.clientRepository.delete(id);
   }
 
-  async create(client: Client): Promise<Client>{
-    return this.clientRepository.save(client);    
+  async create(client: Client): Promise<Client> {
+    return this.clientRepository.save(client);
   }
 
 }

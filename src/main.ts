@@ -19,7 +19,6 @@ async function bootstrap() {
 bootstrap();
 
 
-//TODO: Cadastrar cliente
 //TODO: Consultar cidade pelo nome
 //TODO: Consultar cidade pelo estado
 //TODO: Consultar cliente pelo nome
