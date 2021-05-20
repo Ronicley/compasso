@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
 import { City } from '../city.entity';
 import { CityService } from './city.service';
 import { Response } from 'express'
@@ -17,29 +17,38 @@ export class CityController {
         }
       )
     } catch (e) {
-      res.status(HttpStatus.NOT_FOUND)
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
   }
 
   @Get(':name')
-  async index(@Param('name') name): Promise<City[]> {    
-    return await this.cityService.findByName(name)
+  async index(@Param('name') name, @Res() res: Response): Promise<any> {
+    try {
+      res.status(HttpStatus.OK).send({
+        data: await this.cityService.findByName(name),
+        message: "success"
+      })
+    } catch (e) {
+      res.status(HttpStatus.NOT_FOUND).send({
+        error: e
+      })
+    }
+    
   }
 
   @Post('create')
-  async create(@Body() cityData: City): Promise<any> {
-    return await this.cityService.create(cityData);
+  async create(@Body() cityData: City, @Res() res: Response): Promise<any> {
+    try {
+      res.status(HttpStatus.OK).send({
+        data: await this.cityService.create(cityData),
+        message: "success"
+      })
+
+    } catch (e) {
+      res.status(HttpStatus.NOT_FOUND).send({
+        error: e
+      })
+    }
   }
 
-  @Put(':id/update')
-  async update(@Param('id') id, @Body() cityData: City): Promise<any> {
-    cityData.id = Number(id);
-    console.log('Update #' + cityData.id)
-    return this.cityService.update(cityData);
-  }
-
-  @Delete(':id/delete')
-  async delete(@Param('id') id): Promise<any> {
-    return this.cityService.delete(id);
-  }
 }
