@@ -6,9 +6,16 @@ import { CityService } from './city.service';
 export class CityController {
   constructor(private cityService: CityService) { }
 
-  @Get()
-  index(): Promise<City[]> {
-    return this.cityService.findAll()
+  @Get('/uf/:uf')
+  async getByUf(@Param('uf') uf): Promise<City[]> {
+    console.log(uf)
+    return await this.cityService.findByUf(uf)
+  }
+  
+  @Get(':name')
+  async index(@Param('name') name): Promise<City[]> {
+    console.log(name)
+    return await this.cityService.findByName(name)
   }
 
   @Post('create')

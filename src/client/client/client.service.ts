@@ -10,20 +10,43 @@ export class ClientService {
     private clientRepository: Repository<Client>
   ) { }
 
-  async findByName(name): Promise<Client[]> {
-    return await this.clientRepository.find({ where: { name: Like(`%${name}%`) } });
+  async findById(id): Promise<Client> {
+    let clientResult: Client = await this.clientRepository.findOne({ id: id });
+    
+    if (!clientResult) throw new Error("not inserted");
+    
+    return clientResult;
   }
 
-  async update(client: Client): Promise<UpdateResult> {
-    return await this.clientRepository.update(client.id, client);
+  async findByName(name): Promise<Client[]> {    
+    let client: Client[] = await this.clientRepository.find({ where: { name: Like(`%${name}%`) } });
+
+    if (client.length === 0) throw new Error("404");
+
+    return client
+  }
+
+  async update({ id, name }: Client): Promise<UpdateResult> {    
+    if(!id || !name) throw new Error("invalid date");
+    
+    return await this.clientRepository.update(id, { name: name });
   }
 
   async delete(id): Promise<DeleteResult> {
-    return await this.clientRepository.delete(id);
+    let deleteResult = new DeleteResult()
+
+    if (deleteResult.affected < 1) throw new Error("")
+
+    return await this.clientRepository.delete(id)
   }
 
-  async create(client: Client): Promise<Client> {
-    return this.clientRepository.save(client);
+  async create(client: Client): Promise<Client> {       
+
+    let clientResult: Client = await this.clientRepository.save(client);
+    
+    if (!clientResult) throw new Error("not inserted");
+    
+    return clientResult
   }
 
 }
