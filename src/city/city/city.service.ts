@@ -11,11 +11,14 @@ export class CityService {
   ) { }
   
   async findByUf(uf): Promise<City[]> {    
-    return await this.cityRepository.find({ where: { uf: Like(`%${uf}%`) } });
+    let cityResponse: City[] = await this.cityRepository.find({ where: { uf: Like(`%${uf}%`) } });
+    
+    if(cityResponse.length == 0) throw new Error("not founded");
+    
+    return cityResponse
   }
 
-  async findByName(name): Promise<City[]> {
-    console.log(name)
+  async findByName(name): Promise<City[]> {    
     return await this.cityRepository.find({ where: { name: Like(`%${name}%`) } });
   }
 
